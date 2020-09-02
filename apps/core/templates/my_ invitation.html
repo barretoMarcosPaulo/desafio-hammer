@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+
+<div class="card col-md-5" style="margin: 6% auto; padding: 10px;">
+    <h2 class="title">Hammer Churras <small style="font-size: 16px;">{{status}}</small></h2>
+
+    <div class="card-body">
+        
+        <p style="font-size: 20px;">
+        
+            {% if invict.presence == True and status == "em aberto" %}
+                Você confirmou presença no churrasco de <strong>{{invict.barbecue.host}}</strong> no dia
+                <strong>{{invict.barbecue.date}}</strong>. O local é <strong>{{invict.barbecue.location}}</strong>
+            
+            {% elif invict.presence == False and status == "em aberto" %}
+                <strong>{{invict.barbecue.host}}</strong> está te convidando para um grande churrasco no dia
+                <strong>{{invict.barbecue.date}}</strong>. O local é <strong>{{invict.barbecue.location}}</strong>
+            
+            {% elif invict.presence == True and status == "fechado" %}
+                Você participou do churrasco de <strong>{{invict.barbecue.host}}</strong> no dia
+                <strong>{{invict.barbecue.date}}</strong>. O local foi <strong>{{invict.barbecue.location}}</strong>
+            {% else %}
+                Você foi convidado para churrasco, por <strong>{{invict.barbecue.host}}</strong> no dia
+                <strong>{{invict.barbecue.date}}</strong>. O local foi <strong>{{invict.barbecue.location}}</strong>
+            {% endif %}
+        </p>
+        
+
+
+        {% if invict.presence == False %}
+        <form method="POST" id="form">{% csrf_token %}
+        
+            <p style="font-size: 16px;">
+                <input name="consumes_alcohol" class="optionPrice" type="checkbox" checked> Vou beber
+            </p>
+
+            
+            <p style="font-size: 16px;">
+                <input class="optionPrice" id="guestPerson" type="checkbox" onclick="guestForm(this)"> Vou levar acompanhante
+                <br>
+                <div class="d-none" style="margin-left: 5%;" id="guest">
+                    <input class="inputInvite" name="guest_name" type="text" placeholder="Nome da pessoa">
+                    <br>
+                    <input class="optionPrice" style="margin-top: 2%;" type="checkbox"> 
+                    <label style="font-size: 16px;">Ele(a) vai beber</label>
+                </div>
+            </p>
+
+            <input value=20 class="d-none" id="value_contribute" type="number" name="value_contribute">
+        </form>
+        {% endif %}
+        
+
+        <p style="font-size: 18px; float: right;">
+            {% if invict.presence == True and status == "fechado" %}
+            {% else %}
+                <strong>Sua Contribuição: R$ <span id="money">{{invict.contribution}}</span></strong>
+            {% endif %}
+        </p>
+
+        <p style="margin-top: 10%;">
+            {% if option == "convidado" %}
+                <a style="cursor: pointer;">Quem mais vai aparecer</a>
+            {% else %}
+                <a style="cursor: pointer;">Participantes</a>
+            {% endif %}
+           
+            {% if not guests %}
+                <div class="text-center">
+                    Você será o(a) primeiro(a) a confirmar.
+                </div>
+            {% endif %}
+           
+            <table class="table table-borderless">
+
+                <tbody>
+
+                {% for guest in guests  %}
+                  <tr>
+                    <td>{{guest.participant.name}}</td>
+                    <td>
+                        {% if guest.guest %}
+                            convidado(a) {{guest.guest}}
+                        {% else %}
+                            Vai sozinho(a)
+                        {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+
+
+                </tbody>
+            </table>
+
+        </p>
+
+        {% if invict.presence == False %}
+        <p class="" style="margin: 8% auto;" onclick="handleSubmit()">
+            <button class="btn-inviction text-center">Aceitar Convite</button>
+        </p>
+        {% else %}
+            {% if status == "em aberto" %}
+            <label>
+                <strong>
+                    Cancelar Participação:
+                </strong>
+            </label>
+            
+            <br>
+            
+            <form style="margin-left: 5%;" method="POST" action="{% url 'core:cancel_participation' invict.pk %}">{% csrf_token %}
+                <input name="cancel" class="btn" type="submit" value="minha">
+                {% if invict.guest %}
+                    <input name="cancel" class="btn" type="submit" value="convidado">
+                {% endif %}
+            </form>
+            {% endif %}
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+
+    function guestForm(input){
+        const options = {
+            true: "",
+            false: "d-none",
+        }
+        document.getElementById('guest').className = options[input.checked]
+    }
+
+    document.querySelectorAll('.optionPrice').forEach((element)=>{
+        element.addEventListener('click', calculateValue)
+    })
+
+    function calculateValue(){
+        let value = 10;
+
+        document.querySelectorAll('.optionPrice').forEach((element)=>{
+            if(element.checked){
+                value+=10;
+            }
+        })
+
+        document.querySelector('#money').textContent = value
+        document.querySelector('#value_contribute').textContent = value
+        document.querySelector('#value_contribute').value = value
+    }
+
+    function handleSubmit(){
+        document.getElementById('form').submit()
+    }
+</script>
+
+{% endblock %}

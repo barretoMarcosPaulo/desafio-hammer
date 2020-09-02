@@ -1,0 +1,133 @@
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-image: url(../images/1836.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+    -webkit-font-smoothing: antialiased !important;
+}
+
+#title{
+    text-align: center;
+    font-weight: 600;
+}
+
+
+body, input, button {
+    font-family: 'Roboto', Arial;
+    font-size: 14px;
+}
+
+.text{
+    font-size: 20px;
+}
+
+.box-home{
+    margin: 8% auto 0;
+    max-width: 580px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 25px;
+}
+
+.box-home .form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+  
+.box-home .form label{
+    font-size: 16px;
+    color: #444;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+
+.box-home form input{
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    height: 45px;
+    padding: 0 15px;
+    font-size: 18px;
+}
+
+
+.inputInvite{
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    height: 45px;
+    padding: 0 15px;
+    font-size: 18px;
+    width: 70%;
+}
+
+
+.input{
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    height: 35px;
+    padding: 0 15px;
+    font-size: 18px;
+    width: 100%;
+}
+
+.box-home .btn{
+    border: 0;
+    border-radius: 2px;
+    width: 100%;
+    height: 42px;
+    padding: 0 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #f05a5b;
+    color: #fff;
+    cursor: pointer;
+  }
+
+.btn-inviction{
+    border: 0;
+    border-radius: 2px;
+    width: 100%;
+    height: 42px;
+    padding: 0 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #f05a5b;
+    color: #fff;
+    cursor: pointer;
+}
+
+.box-home button.btn:hover{
+    background: #e14f50;
+}
+
+.box-home .btn-register{
+    color: rgb(65, 65, 65);
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 18px;
+}
+
+.btn-register:hover{
+    color: rgb(114, 114, 114);
+}
+
+.card-dashboard{
+    margin: 3% auto;
+    display: block;
+    background-color: gray;
+}

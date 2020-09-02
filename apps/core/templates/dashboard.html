@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+
+<div class="card col-md-6" style="margin: 6% auto; padding: 10px;">
+    <h2 class="title">Hammer Churras</h2>
+
+    <div class="card-body">
+      
+        <p>Meus Churrascos</p>
+        
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Novos Churrascos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Já Participei</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Eu Convidei</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <br>
+                <table class="table table-borderless table-dark">
+                    <thead>
+                      <tr>
+                        <th scope="col">Convidado por</th>
+                        <th scope="col">Onde</th>
+                        <th scope="col">Quando</th>
+                        <th scope="col">Presença</th>
+                        <th class="text-center" scope="col">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for churras in news %}
+                      <tr>
+                        <td>{{churras.barbecue.host}}</td>
+                        <td>{{churras.barbecue.location}}</td>
+                        <td>{{churras.barbecue.date}}</td>
+                        <td>
+                          {% if churras.presence == True %}
+                            <strong class="text-success">Confirmada</strong>
+                          {% else %}
+                            <strong class="text-danger">Não Confirmada</strong>
+                          {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <a href="{% url 'core:detail_inviction' current_user churras.id %}" class="btn btn-info btn-sm">
+                                Ver Detalhes
+                            </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <br>
+                <table class="table table-borderless table-dark">
+                    <thead>
+                      <tr>
+                        <th scope="col">Quem Me Convidou</th>
+                        <th scope="col">Onde foi</th>
+                        <th scope="col">Quando</th>
+                        <th scope="col" class="text-center">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for history in alls %}
+                      <tr>
+                        <td>{{history.barbecue.host}}</td>
+                        <td>{{history.barbecue.location}}</td>
+                        <td>{{history.barbecue.date}}</td>
+                        <td class="text-center">
+                            <a href="{% url 'core:detail_inviction' current_user history.id %}" class="btn btn-info btn-sm">
+                                Ver Detalhes
+                            </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+  
+                    </tbody>
+                </table>
+                
+
+            </div>
+          
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <br>
+                <table class="table table-borderless table-dark">
+                    <thead>
+                      <tr>
+                        <th scope="col">Quando Foi</th>
+                        <th scope="col">Onde foi</th>
+                        <th class="text-center" scope="col">Acões</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for churras in created_me %}
+                      <tr>
+                        <td>{{churras.date}}</td>
+                        <td>{{churras.location}}</td>
+                        <td class="text-center">
+                            <a href="{% url 'core:detail' current_user churras.pk  %}" class="btn btn-info btn-sm">
+                                Ver Detalhes
+                            </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+  
+                    </tbody>
+                </table>
+
+            </div>
+          </div>
+          
+          <p class="" style="margin: 5% auto;">
+            <a href="{% url 'core:create' current_user %}">
+              <button class="btn-inviction text-center">Convidar Pessoas</button>
+            </a>
+          </p>
+
+    </div>
+</div>
+
+
+
+{% endblock %}

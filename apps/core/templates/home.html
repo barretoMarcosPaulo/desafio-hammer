@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="box-home">
+    
+    <h2 id="title">Churras da Hammer</h2>
+
+    <p class="text">
+        Seja <strong>legal</strong> e participe dos <strong>churrascos</strong> da Hammer. Veja para quais
+        churrascos você foi convidado ou <strong>convide</strong> a galera para o seu.
+    </p>
+
+    <!-- Form Login -->
+    <form class="form" id="form-login" method="post">{% csrf_token %}
+        <label>Nome de usuário*</label>
+        <input type="text" name="username" placeholder="Digite seu nome de usuário">
+        
+        <button id="btn-submit-login" class="btn" type="submit">Acessar</button>
+    </form>
+
+
+    <!-- Form Register -->
+    <form class="form d-none" id="form-register" action="{% url 'core:register' %}" method="post">{% csrf_token %}
+        <label>Nome*</label>
+        <input type="text" name="name" placeholder="Digite seu nome">
+        
+        <label>Nome de usuário*</label>
+        <input type="text" name="username" placeholder="Escolha um nome de usuário, não use espaços.">
+        
+        <button id="btn-submit-register" class="btn" type="submit">Cadastrar</button>
+    </form>
+
+    <label id="btn-register" class="btn-register" onclick="showOptions('register')">Sou novo aqui</label>
+    <label id="btn-access" class="btn-register d-none" onclick="showOptions('login')">Ja tenho acesso</label>
+
+</div>
+
+<script>
+
+    function showOptions(option){
+        options = {
+            'register':['form','d-none', 'btn-register', 'd-none'],
+            'login':['d-none', 'form', 'd-none', 'btn-register']
+        }
+       
+        document.getElementById('form-register').className = options[option][0]
+        document.getElementById('form-login').className = options[option][1]
+        document.getElementById('btn-access').className = options[option][2]
+        document.getElementById('btn-register').className = options[option][3]
+        
+    }
+
+
+    var fields= document.querySelectorAll('[name="username"]');
+
+    fields.forEach((input)=>{
+
+        input.addEventListener('keypress', function ( event ) {  
+        var key = event.keyCode;
+            if (key === 32) {
+            event.preventDefault();
+            }
+        });
+
+    })
+
+
+</script>
+{% endblock %}

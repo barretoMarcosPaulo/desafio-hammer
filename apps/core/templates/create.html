@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block body %}
+
+
+
+<div class="card col-md-5" style="margin: 6% auto; padding: 10px;">
+    <h2 class="title">Hammer Churras</h2>
+
+    <div class="card-body">
+      
+
+        <form method="POST" id="form_churras">{% csrf_token %}
+
+            
+            <p>
+                <label>Onde*</label>
+                <br>
+                <input name="location"  class="input" type="text" placeholder="Local do churrasco">
+            </p>
+
+
+            <p>
+                <label>Quando vai ser*</label>
+                <br>
+                <input name="date" class="input" type="date">
+            </p>
+
+            <p>
+                <label>Valor gasto com bebidas*</label>
+                <br>
+                <input class="input" name="spent_drinks" placeholder="quanto foi gasto com bebidas" type="number">
+            </p>
+
+            <p>
+                <label>Valor gasto com comida*</label>
+                <br>
+                <input class="input" name="spent_foods" placeholder="quanto foi gasto com comidas" type="number">
+            </p>
+
+            <p>
+              <label class="d-none">Lista com os convidados</label>
+              <input type="text" id="list_guests" name="guests" class="d-none">
+            </p>
+            
+        </form>
+
+
+        <p style="margin-top: 10%;">
+            <a style="cursor: pointer;">Quem vou convidar</a>
+
+            <table class="table table-borderless">
+
+                <tbody>
+
+                  {% for person in persons %}
+                    <tr>
+                      <td>{{person}}</td>
+                      <td><input class="checkbox" value="{{person.pk}}" type="checkbox"></td>
+                    </tr>
+                  {% endfor %}
+
+
+                </tbody>
+            </table>
+
+        </p>
+
+
+        <p class="" style="margin: 8% auto;">
+            <button class="btn-inviction text-center" onclick="handleSubmit()">Criar churrasco</button>
+        </p>
+
+    </div>
+</div>
+
+
+<script>
+  
+  const all_persons = document.querySelectorAll('.checkbox')
+
+  function handleSubmit(){
+    let list_guests = new Array();
+
+    all_persons.forEach((person)=>{
+      if(person.checked){
+        list_guests.push(person.value)
+      }
+    })
+
+    document.querySelector('#list_guests').value = list_guests.toString()
+    document.getElementById('form_churras').submit()
+
+  }
+</script>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+
+<div class="card col-md-5" style="margin: 6% auto; padding: 10px;">
+    <h2 class="title">Hammer Churras  <small style="font-size: 14px;">{{status}}</small></h2>
+
+    <div class="card-body">
+      
+        <p style="font-size: 20px;">
+            <strong>Você</strong> convidou a galera para um churrasco no dia
+            <strong>{{churras.date}}</strong>. O local escolhido foi <strong>Rua 22, bairro Junco.</strong>
+        </p>
+        
+        
+        <p style="font-size: 18px;">
+            Total Arrecadado {% if status == "em aberto" %} até agora {% endif %}: <strong>R$ <span>{{contributions}}</span></strong>
+            <br>
+            Desepesas Totais: <strong>R$ <span>{{total_spent}}</span></strong>
+        </p>
+        
+
+        <p style="margin-top: 10%;">
+
+            {% if status == "em aberto" %}
+                <a style="cursor: pointer;">Convidados</a>
+            {% else %}
+                <a style="cursor: pointer;">Participaram</a>
+            {% endif %}
+            <table class="table table-borderless">
+
+                <tbody>
+
+                {% for guest in guests  %}
+                  <tr>
+                    <td>
+                        
+                        {{guest.participant.name}}
+                        {% if guest.presence == True %}
+                            <strong class="text-success">Confirmou</strong>
+                        {% else %}
+                            <strong class="text-danger">Não Confirmou</strong>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if guest.guest %}
+                            convidado(a)
+                            {{guest.guest}}
+                        {% else %}
+                            {% if guest.presence == True %}
+                                {% if status == "em aberto" %}
+                                    Vai sozinho(a)
+                                {% else %}
+                                    Foi sozinho(a)
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+
+
+                </tbody>
+            </table>
+
+        </p>
+
+
+    </div>
+</div>
+
+<script>
+    function guestForm(input){
+        const options = {
+            true: "",
+            false: "d-none",
+        }
+        document.getElementById('guest').className = options[input.checked]
+    }
+</script>
+
+{% endblock %}
